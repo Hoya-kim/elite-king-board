@@ -19,7 +19,7 @@ public class Member {
     @Id @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @Getter @Setter private String nickname;
     
     @Column(nullable = false)
