@@ -13,4 +13,9 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+    @Bean
+    public MemberMapper memberMapper() {
+        return new MemberMapper();
+    }
 }
