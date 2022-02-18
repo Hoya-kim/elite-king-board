@@ -6,8 +6,7 @@
           :src="logo"
           class="my-3"
           contain
-          height="200"
-        />
+          height="200" />
       </v-col>
 
       <v-col class="mb-4">
@@ -18,18 +17,16 @@
 
         <p class="subheading font-weight-regular">
           For help and collaboration with other Vuetify developers,
-          <br>please join our online
+          <br />please join our online
           <a
             href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
+            target="_blank">Discord Community</a>
         </p>
       </v-col>
 
       <v-col
         class="mb-5"
-        cols="12"
-      >
+        cols="12">
         <h2 class="headline font-weight-bold mb-5">
           What's next?
         </h2>
@@ -40,8 +37,7 @@
             :key="i"
             :href="next.href"
             class="subheading mx-3"
-            target="_blank"
-          >
+            target="_blank">
             {{ next.text }}
           </a>
         </v-row>
@@ -49,8 +45,7 @@
 
       <v-col
         class="mb-5"
-        cols="12"
-      >
+        cols="12">
         <h2 class="headline font-weight-bold mb-5">
           Important Links
         </h2>
@@ -61,8 +56,7 @@
             :key="i"
             :href="link.href"
             class="subheading mx-3"
-            target="_blank"
-          >
+            target="_blank">
             {{ link.text }}
           </a>
         </v-row>
@@ -70,8 +64,7 @@
 
       <v-col
         class="mb-5"
-        cols="12"
-      >
+        cols="12">
         <h2 class="headline font-weight-bold mb-5">
           Ecosystem
         </h2>
@@ -82,8 +75,7 @@
             :key="i"
             :href="eco.href"
             class="subheading mx-3"
-            target="_blank"
-          >
+            target="_blank">
             {{ eco.text }}
           </a>
         </v-row>
@@ -93,7 +85,7 @@
 </template>
 
 <script>
-import logo from '../assets/logo.svg'
+import logo from '../assets/logo.svg';
 
 export default {
   name: 'HelloWorld',
@@ -147,5 +139,5 @@ export default {
       },
     ],
   }),
-}
+};
 </script>
