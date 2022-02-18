@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Account {
 
     @Getter
     @Id @GeneratedValue
@@ -34,7 +34,7 @@ public class Member {
     @Column(nullable = false)
     @Getter private LocalDateTime joinedAt;
 
-    public Member(String nickname, String password, String email, Role role) {
+    public Account(String nickname, String password, String email, Role role) {
         this.nickname = nickname;
         this.password = password;
         this.email = email;

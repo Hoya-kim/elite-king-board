@@ -10,15 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class MemberService {
+public class AccountService {
 
-    private final MemberRepository memberRepository;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Member signUp(SignUpRequestDto signUpRequestDto) {
+    public Account signUp(SignUpRequestDto signUpRequestDto) {
         signUpRequestDto.setPassword(encode(signUpRequestDto.getPassword()));
-        return memberRepository.save(signUpRequestDto.toEntity());
+        return accountRepository.save(signUpRequestDto.toEntity());
     }
 
     private String encode(String password) {

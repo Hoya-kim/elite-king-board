@@ -1,6 +1,6 @@
 package com.board.server.modules.member.dto;
 
-import com.board.server.modules.member.Member;
+import com.board.server.modules.member.Account;
 import com.board.server.modules.member.Role;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -25,7 +25,7 @@ public class SignUpRequestDto {
     @NotBlank
     private String email;
 
-    public Member toEntity() {
-        return new Member(nickname, password, email, Role.USER);
+    public Account toEntity() {
+        return new Account(nickname, password, email, Role.USER);
     }
 }
