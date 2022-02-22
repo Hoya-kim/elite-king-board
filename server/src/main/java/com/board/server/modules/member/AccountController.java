@@ -1,6 +1,9 @@
 package com.board.server.modules.member;
 
 import com.board.server.modules.member.dto.SignUpRequestDto;
+import com.board.server.modules.member.dto.SignUpResponseDto;
+import com.board.server.modules.member.mapper.AccountMapper;
+import java.net.URI;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -8,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     private final AccountService accountService;
+    private final AccountMapper accountMapper;
 
     @PostMapping("/members/sign-up")
     public ResponseEntity signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto)
@@ -25,6 +30,14 @@ public class AccountController {
         accountService.signUp(signupRequestDto);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/members/authentication-mail")
+    public ResponseEntity<SignUpResponseDto> checkAuthenticationToken(String email, String token) {
+        Account newAccount = accountService.completeSignUp(email, token);
+
+        return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
+                .body(accountMapper.toResponseDto(newAccount));
     }
 
     @ExceptionHandler

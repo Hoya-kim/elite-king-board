@@ -7,6 +7,7 @@ import com.board.server.modules.member.dto.SignUpRequestDto;
 import java.util.UUID;
 import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,9 @@ public class AccountService {
     private static final String ACCOUNT_CACHE_NAME = "accountTemp";
     private static final String AUTHENTICATION_EMAIL_VIEW = "mail/authentication";
     private static final String AUTHENTICATION_EMAIL_SUBJECT = "Elite King Board 인증 메일 입니다.";
+    private static final String INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE = "인증 유효기간을 초과했거나 올바르지 않은 요청입니다.";
 
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final CacheManager cacheManager;
     private final EmailService emailService;
@@ -70,5 +73,27 @@ public class AccountService {
 
     private String encode(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    @Transactional
+    public Account completeSignUp(String email, String token) {
+        SignUpRequestDto requestDto = getRequestDtoFromCache(email);
+        validateAuthenticationToken(token, requestDto);
+
+        return accountRepository.save(requestDto.toEntity());
+    }
+
+    private SignUpRequestDto getRequestDtoFromCache(String email) {
+        ValueWrapper value = cacheManager.getCache(ACCOUNT_CACHE_NAME).get(email);
+        if (value == null) {
+            throw new IllegalArgumentException(INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE);
+        }
+        return (SignUpRequestDto) value.get();
+    }
+
+    private void validateAuthenticationToken(String token, SignUpRequestDto requestDto) {
+        if (!requestDto.getAuthenticationToken().equals(token)) {
+            throw new IllegalArgumentException(INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE);
+        }
     }
 }
