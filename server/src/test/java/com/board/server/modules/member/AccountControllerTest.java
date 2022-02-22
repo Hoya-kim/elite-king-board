@@ -1,12 +1,19 @@
 package com.board.server.modules.member;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.board.server.modules.member.dto.SignUpRequestDto;
+import com.board.server.modules.member.dto.SignUpResponseDto;
 import com.board.server.modules.member.mapper.AccountMapper;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,5 +51,23 @@ class AccountControllerTest {
                         .content(requestContent)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @DisplayName("인증 요청을 받는다. - 정상")
+    @Test
+    void Given_When_Then() throws Exception {
+        // Given
+        Account account = new Account("kimtaejun", "12341234", "taejun0509@11stcorp.com", Role.USER);
+        when(accountService.completeSignUp(any(String.class), any(String.class))).thenReturn(account);
+        when(accountMapper.toResponseDto(any(Account.class))).thenReturn(new SignUpResponseDto(account));
+
+        // When & Then
+        mvc.perform(get("/members/authentication-mail")
+                        .param("email", "taejun0509@11stcorp.com")
+                        .param("token", UUID.randomUUID().toString()))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andExpect(jsonPath("$.nickname", equalTo("kimtaejun")))
+                .andExpect(jsonPath("$.email", equalTo("taejun0509@11stcorp.com")));
     }
 }
