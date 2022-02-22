@@ -35,7 +35,7 @@ public class AccountService {
     private final AppProperties appProperties;
 
     public void signUp(SignUpRequestDto requestDto) throws MessagingException {
-        EmailMessage emailMessage = sendAuthenticationEmail(requestDto); //TODO 이름 변경.
+        EmailMessage emailMessage = createAuthenticationEmailMessage(requestDto);
         emailService.send(emailMessage);
 
         saveRequestToCache(requestDto);
@@ -46,7 +46,7 @@ public class AccountService {
         cacheManager.getCache(ACCOUNT_CACHE_NAME).put(requestDto.getEmail(), requestDto);
     }
 
-    private EmailMessage sendAuthenticationEmail(SignUpRequestDto requestDto) throws MessagingException {
+    private EmailMessage createAuthenticationEmailMessage(SignUpRequestDto requestDto) throws MessagingException {
         requestDto.setAuthenticationToken(UUID.randomUUID().toString());
 
         Context context = createContext(requestDto);
