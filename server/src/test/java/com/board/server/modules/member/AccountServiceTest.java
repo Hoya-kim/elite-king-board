@@ -59,4 +59,28 @@ class AccountServiceTest {
         // Then
         then(emailService).should().send(any(EmailMessage.class));
     }
+
+    @DisplayName("회원 가입 인증 요청이 들어온다 - 정상")
+    @Test
+    void GivenRequest_WhenAuthenticationRequest_ThenSaveRequestToRepository() throws MessagingException {
+        // Given
+        accountService.signUp(signUpRequestDto);
+
+        // When
+        accountService.completeSignUp(signUpRequestDto.getEmail(), signUpRequestDto.getAuthenticationToken());
+
+        // Then
+        Account account = accountRepository.findAll().get(0);
+        assertThat(account.getEmail()).isEqualTo(signUpRequestDto.getEmail());
+        assertThat(account.getNickname()).isEqualTo(signUpRequestDto.getNickname());
+    }
+
+    @DisplayName("회원 가입 인증 요청이 들어온다 - 캐시에 존재하지 않음.")
+    @Test
+    void Given_When_Then() {
+        // When & Then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> accountService.completeSignUp(signUpRequestDto.getEmail(),
+                        signUpRequestDto.getAuthenticationToken()));
+    }
 }
