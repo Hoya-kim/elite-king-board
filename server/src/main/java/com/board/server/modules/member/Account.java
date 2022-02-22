@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -33,8 +35,10 @@ public class Account {
     @Enumerated(EnumType.STRING)
     @Getter @Setter private Role role;
 
-    @Column(nullable = false)
-    @Getter private LocalDateTime joinedAt;
+    @DateTimeFormat(iso = ISO.DATE_TIME)
+//    @Column(nullable = false)
+    @Getter
+    private LocalDateTime joinedAt;
 
     public Account(String nickname, String password, String email, Role role) {
         this.nickname = nickname;
