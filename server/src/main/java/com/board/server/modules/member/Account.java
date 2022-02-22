@@ -20,20 +20,28 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class Account {
 
     @Getter
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    @Getter @Setter private String nickname;
-    
+    @Getter
+    @Setter
+    private String nickname;
+
     @Column(nullable = false)
-    @Setter private String password;
-    
+    @Setter
+    private String password;
+
     @Column(nullable = false, unique = true)
-    @Getter @Setter private String email;
+    @Getter
+    @Setter
+    private String email;
 
     @Enumerated(EnumType.STRING)
-    @Getter @Setter private Role role;
+    @Getter
+    @Setter
+    private Role role;
 
     @DateTimeFormat(iso = ISO.DATE_TIME)
 //    @Column(nullable = false)
