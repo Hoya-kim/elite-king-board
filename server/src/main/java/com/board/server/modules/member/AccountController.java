@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -39,7 +40,6 @@ public class AccountController {
         return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
                 .body(accountMapper.toResponseDto(newAccount));
     }
-
     @ExceptionHandler
     public String MessagingExceptionHandler(MessagingException exception, HttpServletRequest request) {
         log.info("{}의 {}요청 인증메일 전송 실패", getRemoteAddress(request), request.getRequestURI());
@@ -52,13 +52,13 @@ public class AccountController {
         String remoteAddr = request.getHeader("X-FORWARDED-FOR");
 
         if (remoteAddr == null) {
-            return request.getHeader("Proxy-Client-IP");
+            remoteAddr = request.getHeader("Proxy-Client-IP");
         }
         if (remoteAddr == null) {
-            return request.getHeader("WL-Proxy-Client-IP");
+            remoteAddr = request.getHeader("WL-Proxy-Client-IP");
         }
         if (remoteAddr == null) {
-            return request.getRemoteAddr();
+            remoteAddr = request.getRemoteAddr();
         }
         return remoteAddr;
     }
