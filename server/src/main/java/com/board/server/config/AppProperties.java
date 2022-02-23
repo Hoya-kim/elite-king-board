@@ -1,13 +1,15 @@
 package com.board.server.config;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
-@Data
-@Component
+@Getter
+@RequiredArgsConstructor
+@ConstructorBinding
 @ConfigurationProperties("app")
 public class AppProperties {
 
-    private String host;
+    private final String host;
 }
