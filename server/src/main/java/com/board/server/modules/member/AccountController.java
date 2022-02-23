@@ -27,7 +27,7 @@ public class AccountController {
     private final AccountMapper accountMapper;
 
     @PostMapping("/members/sign-up")
-    public ResponseEntity signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto)
+    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto)
             throws MessagingException {
         accountService.signUp(signupRequestDto);
 
@@ -41,6 +41,7 @@ public class AccountController {
         return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
                 .body(accountMapper.toResponseDto(newAccount));
     }
+    
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public String MessagingExceptionHandler(MessagingException exception, HttpServletRequest request) {
