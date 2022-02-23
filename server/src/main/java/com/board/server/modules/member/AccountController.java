@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,7 @@ public class AccountController {
         return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
                 .body(accountMapper.toResponseDto(newAccount));
     }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public String MessagingExceptionHandler(MessagingException exception, HttpServletRequest request) {
         log.info("{}의 {}요청 인증메일 전송 실패", getRemoteAddress(request), request.getRequestURI());
