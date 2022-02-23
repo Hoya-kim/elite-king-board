@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.board.server.modules.member.dto.SignUpRequestDto;
 import com.board.server.modules.member.dto.SignUpResponseDto;
 import com.board.server.modules.member.mapper.AccountMapper;
+import com.board.server.modules.member.validator.SignUpValidator;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,9 +30,11 @@ class AccountControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    AccountMapper accountMapper;
+    private AccountMapper accountMapper;
     @MockBean
     private AccountService accountService;
+    @MockBean
+    private SignUpValidator signUpValidator;
 
     private String requestContent;
 
