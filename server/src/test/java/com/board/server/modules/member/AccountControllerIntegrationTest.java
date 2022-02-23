@@ -1,6 +1,5 @@
 package com.board.server.modules.member;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,6 +53,78 @@ public class AccountControllerIntegrationTest {
         // When & Then
         mvc.perform(post("/members/sign-up")
                         .content(requestContent)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 닉네임에 유효하지 않은 특수문자가 존재")
+    @Test
+    void GivenInvalidName_WhenSignUp_ThenThrowException() throws Exception {
+        String request = "{\"nickname\": \"kimtaejun!\",\"password\": \"12341234\",\"email\": \"taejun0509@11stcorp.com\"}";
+
+        // When & Then
+        mvc.perform(post("/members/sign-up")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 너무 짧은 이름")
+    @Test
+    void GivenShortName_WhenSignUp_ThenThrowException() throws Exception {
+        String request = "{\"nickname\": \"HI\",\"password\": \"12341234\",\"email\": \"taejun0509@11stcorp.com\"}";
+
+        // When & Then
+        mvc.perform(post("/members/sign-up")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 너무 긴 이름")
+    @Test
+    void GivenlongName_WhenSignUp_ThenThrowException() throws Exception {
+        String request = "{\"nickname\": \"KingGodGeneralUno!\",\"password\": \"12341234\",\"email\": \"taejun0509@11stcorp.com\"}";
+
+        // When & Then
+        mvc.perform(post("/members/sign-up")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 11번가 이메일이 아님")
+    @Test
+    void GivenInvalidEmail_WhenSignUp_ThenThrowException() throws Exception {
+        String request = "{\"nickname\": \"kimtaejun\",\"password\": \"12341234\",\"email\": \"taejun0509@naver.com\"}";
+
+        // When & Then
+        mvc.perform(post("/members/sign-up")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 너무 짧은 비밀번호")
+    @Test
+    void GivenShortPassword_WhenSignUp_ThenThrowException() throws Exception {
+        String request = "{\"nickname\": \"kimtaejun\",\"password\": \"1234\",\"email\": \"taejun0509@11stcorp.com\"}";
+
+        // When & Then
+        mvc.perform(post("/members/sign-up")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 너무 긴 비밀번호")
+    @Test
+    void GivenLongPassword_WhenSignUp_ThenThrowException() throws Exception {
+        String request = "{\"nickname\": \"kimtaejun\",\"password\": \"1234567890123456789012345678901\",\"email\": \"taejun0509@11stcorp.com\"}";
+
+        // When & Then
+        mvc.perform(post("/members/sign-up")
+                        .content(request)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
