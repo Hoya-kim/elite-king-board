@@ -12,8 +12,6 @@ public class ConsoleEmailService implements EmailService {
 
     @Override
     public void send(EmailMessage emailMessage) throws MessagingException {
-        log.info("To: {}", emailMessage.getTo());
-        log.info("Subject: {}", emailMessage.getSubject());
-        log.info("text: {}", emailMessage.getText());
+        log.info("To: {}, text: {}", emailMessage.getTo(), emailMessage.getText());
     }
 }
