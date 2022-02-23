@@ -77,7 +77,7 @@ class AccountServiceTest {
 
     @DisplayName("회원 가입 인증 요청이 들어온다 - 캐시에 존재하지 않음.")
     @Test
-    void Given_When_Then() {
+    void GivenRequestSignUp_WhenNotFoundFromCache_ThenThrowsException() {
         // When & Then
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> accountService.completeSignUp(signUpRequestDto.getEmail(),
