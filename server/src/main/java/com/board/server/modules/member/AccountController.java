@@ -14,10 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,17 +32,14 @@ public class AccountController {
     private final AccountMapper accountMapper;
     private final SignUpValidator signUpValidator;
 
-    @InitBinder("signUpRequestDto")
-    public void initBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(signUpValidator);
-    }
-
     @PostMapping("/members/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto, Errors errors)
             throws MessagingException {
+        signUpValidator.validate(signupRequestDto, errors);
         if (errors.hasErrors()) {
             throw new InvalidSignUpRequestException(getFirstErrorDefaultMessage(errors));
         }
+
         accountService.signUp(signupRequestDto);
 
         return ResponseEntity.ok().build();

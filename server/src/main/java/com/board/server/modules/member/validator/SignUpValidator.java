@@ -7,23 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
 @RequiredArgsConstructor
 @Component
-public class SignUpValidator implements Validator {
+public class SignUpValidator {
 
     private static final String EXISTS_EMAIL_ERROR_MESSAGE = "이미 사용중인 이메일 입니다.";
 
     private final AccountRepository accountRepository;
     private final CacheManager cacheManager;
 
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(SignUpRequestDto.class);
-    }
-
-    @Override
     public void validate(Object target, Errors errors) {
         SignUpRequestDto signUpRequestDto = (SignUpRequestDto) target;
         String email = signUpRequestDto.getEmail();
