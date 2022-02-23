@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -26,21 +25,17 @@ public class Account {
 
     @Column(nullable = false)
     @Getter
-    @Setter
     private String nickname;
 
     @Column(nullable = false)
-    @Setter
     private String password;
 
     @Column(nullable = false, unique = true)
     @Getter
-    @Setter
     private String email;
 
     @Enumerated(EnumType.STRING)
     @Getter
-    @Setter
     private Role role;
 
     @DateTimeFormat(iso = ISO.DATE_TIME)
