@@ -12,11 +12,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CacheConfig {
 
+    public static final String ACCOUNT_CACHE_NAME = "accountTemp";
+
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Arrays.asList(
-                new ConcurrentMapCache("accountTemp")
+                new ConcurrentMapCache(ACCOUNT_CACHE_NAME)
         ));
         return cacheManager;
     }
