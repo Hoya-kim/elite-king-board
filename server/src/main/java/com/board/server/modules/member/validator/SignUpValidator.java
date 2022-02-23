@@ -17,8 +17,7 @@ public class SignUpValidator {
     private final AccountRepository accountRepository;
     private final CacheManager cacheManager;
 
-    public void validate(Object target, Errors errors) {
-        SignUpRequestDto signUpRequestDto = (SignUpRequestDto) target;
+    public void validate(SignUpRequestDto signUpRequestDto, Errors errors) {
         String email = signUpRequestDto.getEmail();
 
         if (isExistsInCache(email) || accountRepository.existsByEmail(email)) {
