@@ -39,7 +39,6 @@ public class AccountController {
         webDataBinder.addValidators(signUpValidator);
     }
 
-
     @PostMapping("/members/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto, Errors errors)
             throws MessagingException {
@@ -65,7 +64,8 @@ public class AccountController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
-    public String InvalidSignUpRequestExceptionHandler(InvalidSignUpRequestException exception, HttpServletRequest request) {
+    public String InvalidSignUpRequestExceptionHandler(InvalidSignUpRequestException exception,
+            HttpServletRequest request) {
         log.error("{}의 회원 가입 요청 실패: {}", getRemoteAddress(request), exception.getMessage());
 
         return exception.getMessage();
@@ -79,7 +79,6 @@ public class AccountController {
 
         return "/error/5xx";
     }
-
 
     private String getRemoteAddress(HttpServletRequest request) {
         String remoteAddr = request.getHeader("X-FORWARDED-FOR");
