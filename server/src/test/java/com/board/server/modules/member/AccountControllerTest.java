@@ -55,7 +55,7 @@ class AccountControllerTest {
 
     @DisplayName("인증 요청을 받는다. - 정상")
     @Test
-    void Given_When_Then() throws Exception {
+    void GivenSignUpAccountRequest_WhenAuthenticationRequest_ThenSaveAccount() throws Exception {
         // Given
         Account account = new Account("kimtaejun", "12341234", "taejun0509@11stcorp.com", Role.USER);
         when(accountService.completeSignUp(any(String.class), any(String.class))).thenReturn(account);
