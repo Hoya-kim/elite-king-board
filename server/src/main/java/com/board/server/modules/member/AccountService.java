@@ -46,7 +46,7 @@ public class AccountService {
         cacheManager.getCache(CacheConfig.ACCOUNT_CACHE_NAME).put(requestDto.getEmail(), requestDto);
     }
 
-    private EmailMessage createAuthenticationEmailMessage(SignUpRequestDto requestDto) throws MessagingException {
+    private EmailMessage createAuthenticationEmailMessage(SignUpRequestDto requestDto) {
         requestDto.setAuthenticationToken(UUID.randomUUID().toString());
 
         Context context = createContext(requestDto);
