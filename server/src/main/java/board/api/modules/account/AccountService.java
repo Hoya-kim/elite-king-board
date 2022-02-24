@@ -48,7 +48,7 @@ public class AccountService implements UserDetailsService {
     private void saveRequestToCache(SignUpRequestDto requestDto) {
         requestDto.setPassword(encode(requestDto.getPassword()));
         cacheManager.getCache(CacheConfig.ACCOUNT_CACHE_NAME)
-            .put(requestDto.getEmail(), requestDto);
+                .put(requestDto.getEmail(), requestDto);
     }
 
     private EmailMessage createAuthenticationEmailMessage(SignUpRequestDto requestDto) {
@@ -58,10 +58,10 @@ public class AccountService implements UserDetailsService {
         String view = templateEngine.process(AUTHENTICATION_EMAIL_VIEW, context);
 
         EmailMessage message = EmailMessage.builder()
-            .to(requestDto.getEmail())
-            .subject(AUTHENTICATION_EMAIL_SUBJECT)
-            .text(view)
-            .build();
+                .to(requestDto.getEmail())
+                .subject(AUTHENTICATION_EMAIL_SUBJECT)
+                .text(view)
+                .build();
 
         return message;
     }
@@ -70,9 +70,9 @@ public class AccountService implements UserDetailsService {
         Context context = new Context();
         context.setVariable("nickname", requestDto.getNickname());
         context.setVariable("link",
-            String.format(AUTHENTICATION_LINK_FORMAT, appProperties.getHost(),
-                requestDto.getEmail(),
-                requestDto.getAuthenticationToken()));
+                String.format(AUTHENTICATION_LINK_FORMAT, appProperties.getHost(),
+                        requestDto.getEmail(),
+                        requestDto.getAuthenticationToken()));
 
         return context;
     }
@@ -106,7 +106,7 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(email);
-        if(account == null) {
+        if (account == null) {
             throw new UsernameNotFoundException("올바르지 않은 로그인 정보입니다.");
         }
         return new UserAccount(account);

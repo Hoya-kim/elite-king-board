@@ -35,9 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.
                 authorizeRequests()
-            .mvcMatchers("/", "/accounts/sign-up", "/login", "/accounts/authentication-mail")
-            .permitAll()
-            .anyRequest().authenticated();
+                .mvcMatchers("/", "/accounts/sign-up", "/login", "/accounts/authentication-mail")
+                .permitAll()
+                .anyRequest().authenticated();
 
         http.
                 formLogin().disable()
@@ -47,6 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }

@@ -37,8 +37,8 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto,
-        Errors errors)
-        throws MessagingException {
+            Errors errors)
+            throws MessagingException {
         signUpValidator.validate(signupRequestDto, errors);
         if (errors.hasErrors()) {
             throw new InvalidSignUpRequestException(getFirstErrorDefaultMessage(errors));
@@ -58,13 +58,13 @@ public class AccountController {
         Account newAccount = accountService.completeSignUp(email, token);
 
         return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
-            .body(accountMapper.toResponseDto(newAccount));
+                .body(accountMapper.toResponseDto(newAccount));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public String invalidSignUpRequestExceptionHandler(InvalidSignUpRequestException exception,
-        HttpServletRequest request) {
+            HttpServletRequest request) {
         log.error("{}의 회원 가입 요청 실패: {}", RequestUtils.getRemoteAddress(request), exception.getMessage());
 
         return exception.getMessage();
@@ -72,8 +72,7 @@ public class AccountController {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public String MessagingExceptionHandler(MessagingException exception,
-        HttpServletRequest request) {
+    public String MessagingExceptionHandler(MessagingException exception, HttpServletRequest request) {
         log.info("{}의 {}요청 인증메일 전송 실패", RequestUtils.getRemoteAddress(request), request.getRequestURI());
         log.error("Server Error: ", exception.getMessage());
 

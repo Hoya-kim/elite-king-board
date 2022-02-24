@@ -48,8 +48,8 @@ class AccountServiceTest {
 
         // Then
         assertThat(
-            cacheManager.getCache("accountTemp").get(signUpRequestDto.getEmail()).get()).isEqualTo(
-            signUpRequestDto);
+                cacheManager.getCache("accountTemp").get(signUpRequestDto.getEmail()).get()).isEqualTo(
+                signUpRequestDto);
     }
 
     @DisplayName("회원 가입 요청이 들어오면 인증 메일을 전송한다.")
@@ -65,13 +65,13 @@ class AccountServiceTest {
     @DisplayName("회원 가입 인증 요청이 들어온다 - 정상")
     @Test
     void GivenRequest_WhenAuthenticationRequest_ThenSaveRequestToRepository()
-        throws MessagingException {
+            throws MessagingException {
         // Given
         accountService.signUp(signUpRequestDto);
 
         // When
         accountService.completeSignUp(signUpRequestDto.getEmail(),
-            signUpRequestDto.getAuthenticationToken());
+                signUpRequestDto.getAuthenticationToken());
 
         // Then
         Account account = accountRepository.findAll().get(0);
@@ -84,7 +84,7 @@ class AccountServiceTest {
     void GivenRequestSignUp_WhenNotFoundFromCache_ThenThrowsException() {
         // When & Then
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> accountService.completeSignUp(signUpRequestDto.getEmail(),
-                signUpRequestDto.getAuthenticationToken()));
+                .isThrownBy(() -> accountService.completeSignUp(signUpRequestDto.getEmail(),
+                        signUpRequestDto.getAuthenticationToken()));
     }
 }

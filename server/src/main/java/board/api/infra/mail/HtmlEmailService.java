@@ -32,7 +32,7 @@ public class HtmlEmailService implements EmailService {
     }
 
     private void setMimeMessage(MimeMessage mimeMessage, EmailMessage emailMessage)
-        throws MessagingException {
+            throws MessagingException {
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
         mimeMessageHelper.setTo(emailMessage.getTo());
         mimeMessageHelper.setSubject(emailMessage.getSubject());
