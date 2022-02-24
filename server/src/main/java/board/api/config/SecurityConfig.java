@@ -41,7 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.
                 formLogin().disable()
-                .httpBasic().disable();
+                .httpBasic().disable()
+                .logout()
+                .logoutSuccessUrl("/");
     }
 
     @Override
