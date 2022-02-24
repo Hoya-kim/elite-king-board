@@ -1,5 +1,6 @@
 package board.api.config;
 
+import board.api.authentication.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(corsFilter);
+                .addFilter(corsFilter)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()));
 
         http.
                 authorizeRequests()
