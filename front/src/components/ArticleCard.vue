@@ -16,7 +16,7 @@
       </v-card-header-text>
     </v-card-header>
     <v-card-text>
-      <div class="text--primary">
+      <div class="text--primary ellipsis">
         {{ article.content }}
       </div>
       <div>
@@ -109,5 +109,19 @@ export default {
 <style lang="scss" scoped>
 .text--primary11 {
   color: #F43142;
+}
+
+.ellipsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 라인수 */
+    -webkit-box-orient: vertical;
+    width: 200px;
+    white-space: normal;
+    line-height: 1.2em;
+    height: 3.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 8px;
 }
 </style>
