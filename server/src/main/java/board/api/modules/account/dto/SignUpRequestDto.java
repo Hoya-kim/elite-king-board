@@ -6,10 +6,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.validator.constraints.Length;
 
+@NoArgsConstructor
 @Data
-@RequiredArgsConstructor
 public class SignUpRequestDto {
 
     @NotBlank
