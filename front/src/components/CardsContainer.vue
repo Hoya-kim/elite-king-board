@@ -23,7 +23,7 @@ import logo from '../assets/logo.svg';
 import ArticleCard from './ArticleCard.vue';
 
 export default {
-  name: 'HelloWorld',
+  name: 'CardsContainer',
 
   components: {
     ArticleCard,
