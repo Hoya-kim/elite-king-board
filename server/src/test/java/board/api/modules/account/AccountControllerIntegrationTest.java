@@ -1,12 +1,18 @@
 package board.api.modules.account;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import board.api.modules.account.dto.SignUpRequestDto;
+import board.api.modules.account.mapper.AccountMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +37,10 @@ public class AccountControllerIntegrationTest {
     private CacheManager cacheManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private AccountMapper accountMapper;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String requestContent;
@@ -39,6 +49,7 @@ public class AccountControllerIntegrationTest {
     @BeforeEach
     void sut() {
         requestContent = "{\"nickname\": \"kimtaejun\",\"password\": \"12341234\",\"email\": \"taejun0509@11stcorp.com\"}";
+        accountRepository.deleteAll();
     }
 
     @DisplayName("회원 가입을 요청을 받는다. - 임시 저장소에 이미 존재하는 이메일")
@@ -151,7 +162,8 @@ public class AccountControllerIntegrationTest {
             }
         };
         String request = objectMapper.writeValueAsString(userInfo);
-        accountRepository.save(new Account("kimtaejun", passwordEncoder.encode("12341234"), "taejun0509@11stcorp.com", Role.USER));
+        accountRepository.save(
+                new Account("kimtaejun", passwordEncoder.encode("12341234"), "taejun0509@11stcorp.com", Role.USER));
 
         // When & Then
         mvc.perform(post("/login")
@@ -159,5 +171,34 @@ public class AccountControllerIntegrationTest {
                         .content(request))
                 .andExpect(status().isOk())
                 .andExpect(header().exists(HttpHeaders.AUTHORIZATION));
+    }
+
+    @DisplayName("회원 가입을 요청을 받는다. - 정상")
+    @Test
+    void GivenRequest_WhenSignUp_ThenOk() throws Exception {
+        // When & Then
+        mvc.perform(post("/accounts/sign-up")
+                        .content(requestContent)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("인증 요청을 받는다. - 정상")
+    @Test
+    void GivenSignUpAccountRequest_WhenAuthenticationRequest_ThenSaveAccount() throws Exception {
+        // Given
+        String token = UUID.randomUUID().toString();
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("kimtaejun", "12341234", "taejun0509@11stcorp.com");
+        signUpRequestDto.setAuthenticationToken(token);
+        cacheManager.getCache("accountTemp").put("taejun0509@11stcorp.com", signUpRequestDto);
+
+        // When & Then
+        mvc.perform(get("/accounts/authentication-mail")
+                        .param("email", "taejun0509@11stcorp.com")
+                        .param("token", token))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andExpect(jsonPath("$.nickname", equalTo("kimtaejun")))
+                .andExpect(jsonPath("$.email", equalTo("taejun0509@11stcorp.com")));
     }
 }
