@@ -1,4 +1,4 @@
-package board.api.modules.account;
+package board.api;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import board.api.modules.account.Account;
+import board.api.modules.account.AccountService;
+import board.api.modules.account.Role;
 import board.api.modules.account.dto.SignUpRequestDto;
 import board.api.modules.account.dto.SignUpResponseDto;
 import board.api.modules.account.mapper.AccountMapper;
@@ -21,10 +24,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest
+@MockBean(JpaMetamodelMappingContext.class)
 class AccountControllerTest {
 
     @Autowired

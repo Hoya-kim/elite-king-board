@@ -1,4 +1,4 @@
-package board.api.modules.account;
+package board.api;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,6 +8,9 @@ import static org.mockito.BDDMockito.then;
 
 import board.api.infra.mail.EmailMessage;
 import board.api.infra.mail.EmailService;
+import board.api.modules.account.Account;
+import board.api.modules.account.AccountRepository;
+import board.api.modules.account.AccountService;
 import board.api.modules.account.dto.SignUpRequestDto;
 import javax.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
