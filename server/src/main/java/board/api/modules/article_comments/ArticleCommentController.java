@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +34,18 @@ public class ArticleCommentController {
         @PathVariable Long articleId,
         @RequestParam(value = "page", required = false) Integer page) {
         return ResponseEntity.ok(articleCommentService.getComments(articleId, page));
+    }
+
+    @PutMapping("/articles/{articleId}/article-comments/{articleCommentId}")
+    public ResponseEntity<ArticleCommentResponseDto> updateComment(
+        @PathVariable("articleId") Long articleId,
+        @PathVariable("articleCommentId") Long articleCommentId,
+        @RequestBody @Valid ArticleCommentRequestDto.Put articleCommentRequestDto) {
+
+        return ResponseEntity.ok(
+            articleCommentService.updateComment(
+                articleId,
+                articleCommentId,
+                articleCommentRequestDto));
     }
 }

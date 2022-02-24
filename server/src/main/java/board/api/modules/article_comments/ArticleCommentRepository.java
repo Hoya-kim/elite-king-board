@@ -1,5 +1,6 @@
 package board.api.modules.article_comments;
 
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,8 @@ public interface ArticleCommentRepository extends JpaRepository<ArticleComment, 
     @Query(value = "select a from ArticleComment a join a.article where a.article.id = :id")
     Page<ArticleComment> findAllByArticleId(@Param("id") Long articleId, Pageable createdAt);
 
+    Optional<ArticleComment> findByArticleIdAndId(
+        Long articleId,
+        Long articleCommentId
+    );
 }

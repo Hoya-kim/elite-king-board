@@ -1,5 +1,6 @@
 package board.api.modules.article_comments;
 
+import board.api.modules.article_comments.dto.ArticleCommentRequestDto;
 import board.api.modules.articles.model.Article;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -60,5 +61,10 @@ public class ArticleComment {
         this.content = content;
         this.createdBy = createdBy;
         this.modifiedBy = createdBy;
+    }
+
+    public void update(ArticleCommentRequestDto.Put articleCommentRequestDto) {
+        this.content = articleCommentRequestDto.getContent();
+        this.modifiedBy = articleCommentRequestDto.getModifiedBy();
     }
 }

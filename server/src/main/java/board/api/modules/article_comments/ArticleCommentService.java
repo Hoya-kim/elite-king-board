@@ -26,6 +26,7 @@ public class ArticleCommentService {
     private static final int COMMENT_PAGE_SIZE = 10;
     private static final int COMMENT_SCALE_SIZE = 10;
     private final String INVALID_ARTICLE_MESSAGE = "존재하지 않는 게시글입니다.";
+    private final String INVALID_ARTICLE_COMMENT_MESSAGE = "존재하지 않는 댓글입니다.";
     private final String INVALID_PAGE_MESSAGE = "존재하지 않는 페이지입니다.";
 
     @Transactional
@@ -62,6 +63,21 @@ public class ArticleCommentService {
         return articleCommentPage.stream()
             .map(articleComment -> modelMapper.map(articleComment, ArticleCommentResponseDto.class))
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ArticleCommentResponseDto updateComment(
+        Long articleId,
+        Long articleCommentId,
+        ArticleCommentRequestDto.Put articleCommentRequestDto
+    ) {
+        ArticleComment articleComment = articleCommentRepository
+            .findByArticleIdAndId(articleId, articleCommentId)
+            .orElseThrow(() -> new IllegalArgumentException(INVALID_ARTICLE_COMMENT_MESSAGE));
+
+        articleComment.update(articleCommentRequestDto);
+
+        return modelMapper.map(articleComment, ArticleCommentResponseDto.class);
     }
 
 }
