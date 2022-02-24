@@ -15,6 +15,14 @@
         <ArticleCard />
       </v-col>
     </v-row>
+    <div class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="15"
+        :total-visible="7" 
+        :color="primaryColor"
+        rounded="circle" />
+    </div>
   </v-container>
 </template>
 
@@ -32,6 +40,7 @@ export default {
   data: () => ({
     logo,
     colSize: '12',
+    primaryColor: '#F43142',
   }),
   mounted() {
     this.getColSize();
