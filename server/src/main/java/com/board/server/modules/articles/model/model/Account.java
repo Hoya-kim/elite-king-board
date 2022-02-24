@@ -1,8 +1,8 @@
 package com.board.server.modules.articles.model.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,7 +26,7 @@ public class Account {
     private Long id;
 
     @OneToMany(mappedBy = "account")
-    private List<Article> article = new ArrayList<>();
+    private Set<Article> article = new HashSet<>();
 
     private String nickname;
 
