@@ -80,4 +80,13 @@ public class ArticleCommentService {
         return modelMapper.map(articleComment, ArticleCommentResponseDto.class);
     }
 
+    public ArticleCommentResponseDto deleteComment(Long articleId, Long articleCommentId) {
+        ArticleComment articleComment = articleCommentRepository
+            .findByArticleIdAndId(articleId, articleCommentId)
+            .orElseThrow(() -> new IllegalArgumentException(INVALID_ARTICLE_COMMENT_MESSAGE));
+
+        articleCommentRepository.deleteById(articleCommentId);
+
+        return modelMapper.map(articleComment, ArticleCommentResponseDto.class);
+    }
 }

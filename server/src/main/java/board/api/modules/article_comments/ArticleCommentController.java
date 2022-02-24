@@ -6,6 +6,7 @@ import board.api.modules.article_comments.dto.ArticleCommentResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +48,14 @@ public class ArticleCommentController {
                 articleId,
                 articleCommentId,
                 articleCommentRequestDto));
+    }
+
+    @DeleteMapping("/articles/{articleId}/article-comments/{articleCommentId}")
+    public ResponseEntity<ArticleCommentResponseDto> deleteComment(
+        @PathVariable("articleId") Long articleId,
+        @PathVariable("articleCommentId") Long articleCommentId) {
+
+        return ResponseEntity.ok(
+            articleCommentService.deleteComment(articleId, articleCommentId));
     }
 }
