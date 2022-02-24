@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequestMapping("/articles")
 @RequiredArgsConstructor
 @RestController
 public class ArticleCommentController {
 
     private final ArticleCommentService articleCommentService;
 
-    @PostMapping("/articles/{articleId}/article-comments")
+    @PostMapping("/{articleId}/article-comments")
     public ResponseEntity<ArticleCommentResponseDto> addComment(
         @PathVariable Long articleId,
         @RequestBody @Valid ArticleCommentRequestDto.Post articleCommentRequestDto) {
@@ -30,14 +32,14 @@ public class ArticleCommentController {
             articleCommentService.addComment(articleId, articleCommentRequestDto));
     }
 
-    @GetMapping("/articles/{articleId}/article-comments")
+    @GetMapping("/{articleId}/article-comments")
     public ResponseEntity<PagingResponseDto> getComments(
         @PathVariable Long articleId,
         @RequestParam(value = "page", required = false) Integer page) {
         return ResponseEntity.ok(articleCommentService.getComments(articleId, page));
     }
 
-    @PutMapping("/articles/{articleId}/article-comments/{articleCommentId}")
+    @PutMapping("/{articleId}/article-comments/{articleCommentId}")
     public ResponseEntity<ArticleCommentResponseDto> updateComment(
         @PathVariable("articleId") Long articleId,
         @PathVariable("articleCommentId") Long articleCommentId,
@@ -50,7 +52,7 @@ public class ArticleCommentController {
                 articleCommentRequestDto));
     }
 
-    @DeleteMapping("/articles/{articleId}/article-comments/{articleCommentId}")
+    @DeleteMapping("/{articleId}/article-comments/{articleCommentId}")
     public ResponseEntity<ArticleCommentResponseDto> deleteComment(
         @PathVariable("articleId") Long articleId,
         @PathVariable("articleCommentId") Long articleCommentId) {
