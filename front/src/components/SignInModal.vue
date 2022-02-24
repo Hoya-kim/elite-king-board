@@ -60,6 +60,7 @@
   const DIALOG_WIDTH_THRESHOLD = 959.98;
 
   export default {
+    name: 'SignInModal',
     data () {
       return {
         primaryColor: '#F43142',
