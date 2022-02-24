@@ -82,6 +82,7 @@ public class ArticleCommentService {
         return modelMapper.map(articleComment, ArticleCommentResponseDto.class);
     }
 
+    @Transactional
     public ArticleCommentResponseDto deleteComment(Long articleId, Long articleCommentId) {
         ArticleComment articleComment = articleCommentRepository
             .findByArticleIdAndId(articleId, articleCommentId)
