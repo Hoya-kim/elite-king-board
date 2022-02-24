@@ -5,6 +5,7 @@ import board.api.modules.account.dto.SignUpRequestDto;
 import board.api.modules.account.dto.SignUpResponseDto;
 import board.api.modules.account.mapper.AccountMapper;
 import board.api.modules.account.validator.SignUpValidator;
+import board.api.utils.RequestUtils;
 import java.net.URI;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +65,7 @@ public class AccountController {
     @ExceptionHandler
     public String invalidSignUpRequestExceptionHandler(InvalidSignUpRequestException exception,
         HttpServletRequest request) {
-        log.error("{}의 회원 가입 요청 실패: {}", getRemoteAddress(request), exception.getMessage());
+        log.error("{}의 회원 가입 요청 실패: {}", RequestUtils.getRemoteAddress(request), exception.getMessage());
 
         return exception.getMessage();
     }
@@ -73,24 +74,9 @@ public class AccountController {
     @ExceptionHandler
     public String MessagingExceptionHandler(MessagingException exception,
         HttpServletRequest request) {
-        log.info("{}의 {}요청 인증메일 전송 실패", getRemoteAddress(request), request.getRequestURI());
+        log.info("{}의 {}요청 인증메일 전송 실패", RequestUtils.getRemoteAddress(request), request.getRequestURI());
         log.error("Server Error: ", exception.getMessage());
 
         return "/error/5xx";
-    }
-
-    private String getRemoteAddress(HttpServletRequest request) {
-        String remoteAddr = request.getHeader("X-FORWARDED-FOR");
-
-        if (remoteAddr == null) {
-            remoteAddr = request.getHeader("Proxy-Client-IP");
-        }
-        if (remoteAddr == null) {
-            remoteAddr = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (remoteAddr == null) {
-            remoteAddr = request.getRemoteAddr();
-        }
-        return remoteAddr;
     }
 }
