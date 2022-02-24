@@ -19,9 +19,10 @@ public class HashTag {
 
     @Id
     @GeneratedValue
-    @Column(name = "hashtag_id")
+    @Column(name = "hashtag_id", columnDefinition = "bigint not null comment 'ID'")
     private Long id;
 
+    @Column(columnDefinition = "varchar(255) not null comment '해시태그'")
     private String hashTag;
 
     @OneToMany(mappedBy = "hashTag")

@@ -26,11 +26,17 @@ public class Article {
     private Long id;
 
     private String title;
+
     private String content;
+
     private int viewCount;
+
     private int likeCount;
+
     private LocalDateTime createdAt;
+
     private String createdBy;
+
     private LocalDateTime modifiedAt;
     private String modifiedBy;
 

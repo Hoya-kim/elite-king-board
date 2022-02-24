@@ -18,14 +18,14 @@ public class ArticleHashtag {
 
     @Id
     @GeneratedValue
-    @Column(name = "article_hashtag_id")
+    @Column(name = "article_hashtag_id", columnDefinition = "bigint not null comment 'ID'")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", columnDefinition = "bigint not null comment '게시글아이디'")
     private Article article;
 
     @ManyToOne
-    @JoinColumn(name = "hashtag_id")
+    @JoinColumn(name = "hashtag_id", columnDefinition = "bigint not null comment '해시태그아이디'")
     private HashTag hashTag;
 }

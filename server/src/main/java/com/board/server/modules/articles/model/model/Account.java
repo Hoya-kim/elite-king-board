@@ -29,9 +29,13 @@ public class Account {
     private List<Article> article = new ArrayList<>();
 
     private String nickname;
+
     private String password;
+
     private String email;
+
     private LocalDateTime joined_at;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 }
