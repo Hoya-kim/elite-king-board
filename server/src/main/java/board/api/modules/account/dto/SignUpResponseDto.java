@@ -19,7 +19,7 @@ public class SignUpResponseDto {
     public SignUpResponseDto(Account account) {
         this.nickname = account.getNickname();
         this.email = account.getEmail();
-        this.joinedAt = account.getJoinedAt();
+        this.joinedAt = account.getCreatedAt();
         this.role = account.getRole();
     }
 }
