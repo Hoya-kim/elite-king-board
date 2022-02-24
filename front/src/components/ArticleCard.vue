@@ -36,12 +36,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn
-        variant="outlined"
-        :color="primaryColor">
-        <!-- @TODO: 게시글 상세보기 모달창 -->
-        더보기
-      </v-btn>
+      <ArticleModal />
         
       <v-spacer />
 
@@ -72,38 +67,43 @@
 </template>
 
 <script>
-  export default {
-    name: 'ArticleCard',
-    data: () => ({
-      primaryColor: '#F43142',
-      article: {
-        // sample data
-        id: '0',
-        title: '게시글 제목',
-        content: '게시글 본문, Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas dolore facilis veritatis id, nam totam officia minima consequatur sapiente vel repellendus ea sint officiis numquam similique maxime. Quas, vero eveniet!',
-        viewCount: 3000,
-        likeCount: 256,
-        createdAt: '2020-01-01',
-        modifiedBy: '게시자',
-        hashTags: ['#해쉬태그1', '#해쉬태그2'],
-        isLiked: true,
-      },
-    }),
-    computed: {
-      iconStatus() {
-        return this.article.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
-      },
+import ArticleModal from './ArticleModal.vue';
+
+export default {
+  name: 'ArticleCard',
+  components: {
+    ArticleModal,
+  },
+  data: () => ({
+    primaryColor: '#F43142',
+    article: {
+      // sample data
+      id: '0',
+      title: '게시글 제목',
+      content: '게시글 본문, Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas dolore facilis veritatis id, nam totam officia minima consequatur sapiente vel repellendus ea sint officiis numquam similique maxime. Quas, vero eveniet!',
+      viewCount: 3000,
+      likeCount: 256,
+      createdAt: '2020-01-01',
+      modifiedBy: '게시자',
+      hashTags: ['#해쉬태그1', '#해쉬태그2'],
+      isLiked: true,
     },
-    methods: {
-      clickLike() {
-        this.article.isLiked = !this.article.isLiked;
-        this.article.likeCount += this.article.isLiked ? 1 : -1;
-      },
-      copyArticleLink() {
-        // @TODO: click event link to h3
-      },
+  }),
+  computed: {
+    iconStatus() {
+      return this.article.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
     },
-  };
+  },
+  methods: {
+    clickLike() {
+      this.article.isLiked = !this.article.isLiked;
+      this.article.likeCount += this.article.isLiked ? 1 : -1;
+    },
+    copyArticleLink() {
+      // @TODO: click event link to h3
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
