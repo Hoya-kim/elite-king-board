@@ -1,6 +1,5 @@
 package board.api.authentication;
 
-import board.api.config.AppProperties;
 import board.api.modules.account.Account;
 import board.api.utils.RequestUtils;
 import com.auth0.jwt.JWT;
@@ -9,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Date;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +34,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("로그인 시도 Address: {}", RequestUtils.getRemoteAddress(request));
 
         try {
-            Account account = objectMapper.readValue(request.getInputStream(), Account.class);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    account.getEmail(), account.getPassword());
-
+            UsernamePasswordAuthenticationToken authenticationToken = createAuthenticationToken(request);
             authentication = authenticationManager.authenticate(authenticationToken);
         } catch (IOException e) {
             log.error("로그인 시도 - Email, Password 읽기 실패 Address {}", RequestUtils.getRemoteAddress(request));
@@ -49,17 +44,30 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authentication;
     }
 
+    private UsernamePasswordAuthenticationToken createAuthenticationToken(HttpServletRequest request)
+            throws IOException {
+        Account account = objectMapper.readValue(request.getInputStream(), Account.class);
+        return new UsernamePasswordAuthenticationToken(account.getEmail(), account.getPassword());
+    }
+
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) {
         UserAccount userAccount = (UserAccount) authResult.getPrincipal();
 
-        String jwtToken = JWT.create()
+        String jwtToken = createJwtToken(userAccount);
+        addAuthorizationHeader(response, jwtToken);
+    }
+
+    private void addAuthorizationHeader(HttpServletResponse response, String jwtToken) {
+        response.addHeader(HttpHeaders.AUTHORIZATION, JwtProperties.TOKEN_PREFIX + jwtToken);
+    }
+
+    private String createJwtToken(UserAccount userAccount) {
+        return JWT.create()
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", userAccount.getAccount().getId())
                 .withClaim("email", userAccount.getAccount().getEmail())
                 .sign(Algorithm.HMAC512(jwtSecretKey));
-
-        response.addHeader(HttpHeaders.AUTHORIZATION, JwtProperties.TOKEN_PREFIX + jwtToken);
     }
 }

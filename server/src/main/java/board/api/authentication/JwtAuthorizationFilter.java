@@ -1,6 +1,5 @@
 package board.api.authentication;
 
-import board.api.config.AppProperties;
 import board.api.modules.account.Account;
 import board.api.modules.account.AccountRepository;
 import com.auth0.jwt.JWT;
@@ -32,27 +31,42 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        String jwtHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
+        if (authorizationHeader == null || invalidFormat(authorizationHeader)) {
             chain.doFilter(request, response);
             return;
         }
 
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION).replace(JwtProperties.TOKEN_PREFIX, "");
-        String email = JWT.require(Algorithm.HMAC512(jwtSecretKey)).build()
-                .verify(token).getClaim("email").asString();
+        String token = removePrefix(request.getHeader(HttpHeaders.AUTHORIZATION));
+        String email = getEmail(token);
 
         if (email != null) {
             Account account = accountRepository.findByEmail(email);
-
-            UserAccount userAccount = new UserAccount(account);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userAccount, userAccount.getPassword(), userAccount.getAuthorities());
-
+            Authentication authentication = getAuthentication(account);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             chain.doFilter(request,response);
         }
+    }
+
+    private boolean invalidFormat(String jwtHeader) {
+        return !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX);
+    }
+
+    private String removePrefix(String authorizationHeader) {
+        return authorizationHeader.replace(JwtProperties.TOKEN_PREFIX, "");
+    }
+
+    private String getEmail(String token) {
+        return JWT.require(Algorithm.HMAC512(jwtSecretKey)).build()
+                .verify(token).getClaim("email").asString();
+    }
+
+    private UsernamePasswordAuthenticationToken getAuthentication(Account account) {
+        UserAccount userAccount = new UserAccount(account);
+        
+        return new UsernamePasswordAuthenticationToken(
+                userAccount, userAccount.getPassword(), userAccount.getAuthorities());
     }
 }
