@@ -5,8 +5,10 @@ import board.api.modules.account.Role;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+@NoArgsConstructor
 @Data
 public class SignUpRequestDto {
 

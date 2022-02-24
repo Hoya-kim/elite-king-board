@@ -8,20 +8,3 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController {
 
 }
-
-//modules ->
-//            account
-//                    service
-//                    controller
-//                    repository
-//                    ...
-//            article
-//                    service
-//                    controller
-//                    repository
-//                    ...
-//            articleComment
-//                    service
-//                    controller
-//                    repository
-//                    ...

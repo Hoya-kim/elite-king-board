@@ -31,7 +31,7 @@ public class AccountControllerIntegrationTest {
         requestContent = "{\"nickname\": \"kimtaejun\",\"password\": \"12341234\",\"email\": \"taejun0509@11stcorp.com\"}";
     }
 
-    @DisplayName("회원 가입을 요청을 받는다. - 임시 저장소에ㅐ 이미 존재하는 이메일")
+    @DisplayName("회원 가입을 요청을 받는다. - 임시 저장소에 이미 존재하는 이메일")
     @Test
     void GivenRequest_WhenExistsEmailInCache_ThenThrowException() throws Exception {
         // Given
