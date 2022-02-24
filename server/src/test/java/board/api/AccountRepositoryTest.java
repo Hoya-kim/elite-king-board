@@ -1,7 +1,10 @@
-package board.api.modules.account;
+package board.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import board.api.modules.account.Account;
+import board.api.modules.account.AccountRepository;
+import board.api.modules.account.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
