@@ -14,6 +14,7 @@ public class ArticleCommentRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Post {
+
         private String content;
 
         private String createdBy;
@@ -31,6 +32,7 @@ public class ArticleCommentRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Put {
+
         private String content;
 
         private String modifiedBy;
