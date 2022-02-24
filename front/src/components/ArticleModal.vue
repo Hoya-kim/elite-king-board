@@ -41,9 +41,8 @@
             :subtitle="article.createdAt">
             <template #prepend>
               <v-avatar class="list-item-avatar">
-                <img
-                  src="https://cdn.vuetifyjs.com/images/john.png"
-                  alt="John" />
+                <avatar
+                  fullname="Jerry Kim" />
               </v-avatar>
             </template>
             <template #append>
@@ -93,7 +92,12 @@
   </v-dialog>
 </template>
 <script>
+import Avatar from 'vue-avatar-component';
+
   export default {
+    components: {
+      Avatar,
+    },
     data () {
       return {
         primaryColor: '#F43142',
