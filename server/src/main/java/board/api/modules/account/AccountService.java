@@ -1,5 +1,6 @@
 package board.api.modules.account;
 
+import board.api.authentication.UserAccount;
 import board.api.config.AppProperties;
 import board.api.config.CacheConfig;
 import board.api.infra.mail.EmailMessage;
@@ -10,6 +11,9 @@ import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +24,9 @@ import org.thymeleaf.context.Context;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class AccountService {
+public class AccountService implements UserDetailsService {
 
-    private static final String AUTHENTICATION_LINK_FORMAT = "%s/members/authentication-mail/?email=%s&token=%s";
+    private static final String AUTHENTICATION_LINK_FORMAT = "%s/accounts/authentication-mail/?email=%s&token=%s";
     private static final String AUTHENTICATION_EMAIL_VIEW = "mail/authentication";
     private static final String AUTHENTICATION_EMAIL_SUBJECT = "Elite King Board 인증 메일 입니다.";
     private static final String INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE = "인증 유효기간을 초과했거나 올바르지 않은 요청입니다.";
@@ -97,5 +101,14 @@ public class AccountService {
         if (!authenticationToken.equals(token)) {
             throw new IllegalArgumentException(INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE);
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Account account = accountRepository.findByEmail(email);
+        if(account == null) {
+            throw new UsernameNotFoundException("올바르지 않은 로그인 정보입니다.");
+        }
+        return new UserAccount(account);
     }
 }
