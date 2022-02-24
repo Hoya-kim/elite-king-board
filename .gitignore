@@ -232,9 +232,6 @@ Temporary Items
 # TODO: where does this rule come from?
 docs/_book
 
-# TODO: where does this rule come from?
-
-
 ### Vuejs ###
 # Recommended template: Node.gitignore
 
