@@ -1,8 +1,6 @@
 <template>
   <v-card
-    class="mx-auto"
-    max-width="344"
-    variant="outlined">
+    class="mx-auto align-end">
     <v-card-header>
       <v-card-header-text>
         <v-card-title>
