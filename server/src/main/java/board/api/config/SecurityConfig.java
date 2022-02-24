@@ -4,6 +4,7 @@ import board.api.authentication.JwtAuthenticationFilter;
 import board.api.authentication.JwtAuthorizationFilter;
 import board.api.modules.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final AccountRepository accountRepository;
 
+    @Value("${app.jwtSecretKey}")
+    private String jwtSecretKey;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
@@ -26,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsFilter)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), accountRepository));
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtSecretKey))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), accountRepository, jwtSecretKey));
 
         http.
                 authorizeRequests()

@@ -1,5 +1,6 @@
 package board.api.authentication;
 
+import board.api.config.AppProperties;
 import board.api.modules.account.Account;
 import board.api.modules.account.AccountRepository;
 import com.auth0.jwt.JWT;
@@ -19,10 +20,13 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final AccountRepository accountRepository;
+    private final String jwtSecretKey;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AccountRepository accountRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AccountRepository accountRepository,
+            String jwtSecretKey) {
         super(authenticationManager);
         this.accountRepository = accountRepository;
+        this.jwtSecretKey = jwtSecretKey;
     }
 
     @Override
@@ -30,13 +34,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             throws ServletException, IOException {
         String jwtHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
+        if (jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
 
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
-        String email = JWT.require(Algorithm.HMAC512("cos")).build()
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION).replace(JwtProperties.TOKEN_PREFIX, "");
+        String email = JWT.require(Algorithm.HMAC512(jwtSecretKey)).build()
                 .verify(token).getClaim("email").asString();
 
         if (email != null) {

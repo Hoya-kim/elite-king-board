@@ -1,5 +1,6 @@
 package board.api.authentication;
 
+import board.api.config.AppProperties;
 import board.api.modules.account.Account;
 import board.api.utils.RequestUtils;
 import com.auth0.jwt.JWT;
@@ -24,9 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private static final int JWT_TOKEN_EXPIRES_AT = 1_800_000;
-
     private final AuthenticationManager authenticationManager;
+    private final String jwtSecretKey;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -55,11 +55,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserAccount userAccount = (UserAccount) authResult.getPrincipal();
 
         String jwtToken = JWT.create()
-                .withExpiresAt(new Date(System.currentTimeMillis() + JWT_TOKEN_EXPIRES_AT))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", userAccount.getAccount().getId())
-                .withClaim("email", userAccount.getUsername())
-                .sign(Algorithm.HMAC512("cos"));
+                .withClaim("email", userAccount.getAccount().getEmail())
+                .sign(Algorithm.HMAC512(jwtSecretKey));
 
-        response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
+        response.addHeader(HttpHeaders.AUTHORIZATION, JwtProperties.TOKEN_PREFIX + jwtToken);
     }
 }
