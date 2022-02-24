@@ -29,9 +29,9 @@ public class Article {
 
     private String content;
 
-    private int viewCount;
+    private Integer viewCount;
 
-    private int likeCount;
+    private Integer likeCount;
 
     private LocalDateTime createdAt;
 
