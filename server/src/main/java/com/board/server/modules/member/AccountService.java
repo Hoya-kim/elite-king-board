@@ -1,6 +1,7 @@
 package com.board.server.modules.member;
 
 import com.board.server.config.AppProperties;
+import com.board.server.config.CacheConfig;
 import com.board.server.infra.mail.EmailMessage;
 import com.board.server.infra.mail.EmailService;
 import com.board.server.modules.member.dto.SignUpRequestDto;
@@ -22,7 +23,6 @@ import org.thymeleaf.context.Context;
 public class AccountService {
 
     private static final String AUTHENTICATION_LINK_FORMAT = "%s/members/authentication-mail/?email=%s&token=%s";
-    private static final String ACCOUNT_CACHE_NAME = "accountTemp";
     private static final String AUTHENTICATION_EMAIL_VIEW = "mail/authentication";
     private static final String AUTHENTICATION_EMAIL_SUBJECT = "Elite King Board 인증 메일 입니다.";
     private static final String INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE = "인증 유효기간을 초과했거나 올바르지 않은 요청입니다.";
@@ -43,10 +43,10 @@ public class AccountService {
 
     private void saveRequestToCache(SignUpRequestDto requestDto) {
         requestDto.setPassword(encode(requestDto.getPassword()));
-        cacheManager.getCache(ACCOUNT_CACHE_NAME).put(requestDto.getEmail(), requestDto);
+        cacheManager.getCache(CacheConfig.ACCOUNT_CACHE_NAME).put(requestDto.getEmail(), requestDto);
     }
 
-    private EmailMessage createAuthenticationEmailMessage(SignUpRequestDto requestDto) throws MessagingException {
+    private EmailMessage createAuthenticationEmailMessage(SignUpRequestDto requestDto) {
         requestDto.setAuthenticationToken(UUID.randomUUID().toString());
 
         Context context = createContext(requestDto);
@@ -84,7 +84,7 @@ public class AccountService {
     }
 
     private SignUpRequestDto getRequestDtoFromCache(String email) {
-        ValueWrapper value = cacheManager.getCache(ACCOUNT_CACHE_NAME).get(email);
+        ValueWrapper value = cacheManager.getCache(CacheConfig.ACCOUNT_CACHE_NAME).get(email);
         if (value == null) {
             throw new IllegalArgumentException(INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE);
         }

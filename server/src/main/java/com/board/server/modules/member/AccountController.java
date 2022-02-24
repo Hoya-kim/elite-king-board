@@ -1,8 +1,10 @@
 package com.board.server.modules.member;
 
+import com.board.server.exception.InvalidSignUpRequestException;
 import com.board.server.modules.member.dto.SignUpRequestDto;
 import com.board.server.modules.member.dto.SignUpResponseDto;
 import com.board.server.modules.member.mapper.AccountMapper;
+import com.board.server.modules.member.validator.SignUpValidator;
 import java.net.URI;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,15 +26,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController {
 
+    private static final int FIRST_ERROR = 0;
+
     private final AccountService accountService;
     private final AccountMapper accountMapper;
+    private final SignUpValidator signUpValidator;
 
     @PostMapping("/members/sign-up")
-    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto)
+    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto, Errors errors)
             throws MessagingException {
+        signUpValidator.validate(signupRequestDto, errors);
+        if (errors.hasErrors()) {
+            throw new InvalidSignUpRequestException(getFirstErrorDefaultMessage(errors));
+        }
+
         accountService.signUp(signupRequestDto);
 
         return ResponseEntity.ok().build();
+    }
+
+    private String getFirstErrorDefaultMessage(Errors errors) {
+        return errors.getAllErrors().get(FIRST_ERROR).getDefaultMessage();
     }
 
     @GetMapping("/members/authentication-mail")
@@ -41,7 +56,16 @@ public class AccountController {
         return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
                 .body(accountMapper.toResponseDto(newAccount));
     }
-    
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public String InvalidSignUpRequestExceptionHandler(InvalidSignUpRequestException exception,
+            HttpServletRequest request) {
+        log.error("{}의 회원 가입 요청 실패: {}", getRemoteAddress(request), exception.getMessage());
+
+        return exception.getMessage();
+    }
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public String MessagingExceptionHandler(MessagingException exception, HttpServletRequest request) {

@@ -3,6 +3,7 @@ package com.board.server.modules.member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -10,10 +11,10 @@ import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id", "email"})
 @Entity
@@ -26,26 +27,22 @@ public class Account {
 
     @Column(nullable = false)
     @Getter
-    @Setter
     private String nickname;
 
     @Column(nullable = false)
-    @Setter
     private String password;
 
     @Column(nullable = false, unique = true)
     @Getter
-    @Setter
     private String email;
 
     @Enumerated(EnumType.STRING)
     @Getter
-    @Setter
     private Role role;
 
-    @DateTimeFormat(iso = ISO.DATE_TIME)
-//    @Column(nullable = false)
     @Getter
+    @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime joinedAt;
 
     public Account(String nickname, String password, String email, Role role) {
