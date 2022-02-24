@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import logo from '../assets/logo.svg';
 import ArticleCard from './ArticleCard.vue';
 
 export default {
@@ -38,7 +37,6 @@ export default {
   },
 
   data: () => ({
-    logo,
     colSize: '12',
     primaryColor: '#F43142',
   }),
