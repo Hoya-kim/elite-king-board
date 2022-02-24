@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <ArticleCard />
     <v-row class="text-center">
       <v-col cols="12">
         <v-img
@@ -86,9 +87,14 @@
 
 <script>
 import logo from '../assets/logo.svg';
+import ArticleCard from './ArticleCard.vue';
 
 export default {
   name: 'HelloWorld',
+
+  components: {
+    ArticleCard,
+  },
 
   data: () => ({
     ecosystem: [

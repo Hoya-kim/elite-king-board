@@ -59,14 +59,16 @@
         size="small"
         color="surface-variant"
         variant="text"
-        icon="mdi-heart-outline" />
+        :icon="iconStatus" 
+        @click="clickLike" />
       {{ article.likeCount }}
 
       <v-btn
         size="small"
         color="surface-variant"
         variant="text"
-        icon="mdi-share-variant" />
+        icon="mdi-share-variant" 
+        @click="copyArticleLink" />
     </v-card-actions>
   </v-card>
 </template>
@@ -89,7 +91,20 @@
         isLiked: true,
       },
     }),
-    
+    computed: {
+      iconStatus() {
+        return this.article.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
+      },
+    },
+    methods: {
+      clickLike() {
+        this.article.isLiked = !this.article.isLiked;
+        this.article.likeCount += this.article.isLiked ? 1 : -1;
+      },
+      copyArticleLink() {
+        // @TODO: click event link to h3
+      },
+    },
   };
 </script>
 
