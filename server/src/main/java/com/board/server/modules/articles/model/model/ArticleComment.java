@@ -1,6 +1,5 @@
 package com.board.server.modules.articles.model.model;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "article_comment")
-public class ArticleComment {
+public class ArticleComment extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -28,11 +27,4 @@ public class ArticleComment {
 
     private String content;
 
-    private LocalDateTime createdAt;
-
-    private String createdBy;
-
-    private LocalDateTime modifiedAt;
-
-    private String modifiedBy;
 }

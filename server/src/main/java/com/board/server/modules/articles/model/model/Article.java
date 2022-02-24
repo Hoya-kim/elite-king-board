@@ -1,6 +1,5 @@
 package com.board.server.modules.articles.model.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -18,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "article")
-public class Article {
+public class Article extends BaseEntity{
 
     @Id
     @GeneratedValue
@@ -32,13 +31,6 @@ public class Article {
     private Integer viewCount;
 
     private Integer likeCount;
-
-    private LocalDateTime createdAt;
-
-    private String createdBy;
-
-    private LocalDateTime modifiedAt;
-    private String modifiedBy;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
