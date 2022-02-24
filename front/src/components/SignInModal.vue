@@ -18,12 +18,32 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
+                  v-model="email"
                   label="Email*"
+                  required />
+              </v-col>
+              <v-col
+                v-show="isSignUp"
+                cols="12">
+                <v-text-field
+                  v-model="nickname"
+                  label="Nickname*"
+                  type="text"
                   required />
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                  v-model="password"
                   label="Password*"
+                  type="password"
+                  required />
+              </v-col>
+              <v-col
+                v-show="isSignUp"
+                cols="12">
+                <v-text-field
+                  v-model="confirmPassword"
+                  label="Confirm Password*"
                   type="password"
                   required />
               </v-col>
@@ -36,21 +56,20 @@
             color="grey-darken-1"
             text-color="white"
             text
-            @click="dialog = false">
-            회원가입
+            @click="switchMode">
+            {{ !isSignUp ? '회원가입' : '로그인' }}
           </v-btn>
           <v-btn
             :color="primaryColor"
             text-color="white"
             text
-            @click="dialog = false">
-            로그인
+            @click="requestSign">
+            {{ isSignUp ? '가입' : '로그인' }}
           </v-btn>
         </v-card-actions>
         <v-spacer />
       </v-card>
     </v-dialog>
-    <!-- @TODO: 회원가입 dialog v-show 처리 -->
   </v-row>
 </template>
 
@@ -63,10 +82,15 @@
     name: 'SignInModal',
     data () {
       return {
+        isSignUp: false,
         primaryColor: '#F43142',
         dialog: false,
         fullScreen: false,
         logo,
+        email: '',
+        nickname: '',
+        password: '',
+        confirmPassword: '',
       };
     },
     computed: {
@@ -90,6 +114,25 @@
     methods: {
       defineFullScreen() {
         this.fullScreen = window.innerWidth < DIALOG_WIDTH_THRESHOLD;
+      },
+      switchMode() {
+        this.isSignUp = !this.isSignUp;
+        this.resetInput();
+      },
+      requestSign() {
+        this.isSignUp ? this.requestSignUp() : this.requestSignIn();
+      },
+      resetInput() {
+        this.email = '';
+        this.nickname = '';
+        this.password = '';
+        this.confirmPassword = '';
+      },
+      requestSignUp() {
+        // @TODO: Sign Up API 요청
+      },
+      requestSignIn() {
+        // @TODO: Sign In API 요청
       },
     },
   };
