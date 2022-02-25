@@ -30,14 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsFilter)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtSecretKey))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), accountRepository, jwtSecretKey));
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtSecretKey));
+//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), accountRepository, jwtSecretKey));
 
         http.
                 authorizeRequests()
-                .mvcMatchers("/", "/accounts/sign-up", "/login", "/accounts/authentication-mail", "/articles", "/articles/{id}")
-                .permitAll()
-                .anyRequest().authenticated();
+//                .mvcMatchers("/", "/accounts/sign-up", "/login", "/accounts/authentication-mail")
+                .anyRequest().permitAll();
 
         http.
                 formLogin().disable()
