@@ -42,7 +42,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
         handler.post(Runnable {
             try {
-                binding.webView.loadUrl("javascript:receiveToken('${"ddd"}')")
+                binding.webView.loadUrl("javascript:receiveToken('${a}')")
                 Log.d("TAG", "initWebView:넣어주세여 ")
 
             } catch (e: Exception) {

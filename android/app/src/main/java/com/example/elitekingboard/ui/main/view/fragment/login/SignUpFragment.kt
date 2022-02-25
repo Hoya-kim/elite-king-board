@@ -1,7 +1,9 @@
 package com.example.elitekingboard.ui.main.view.fragment.login
 
+import android.util.Log
 import androidx.lifecycle.Observer
 import com.example.elitekingboard.R
+import com.example.elitekingboard.data.dto.request.SignUpRequest
 import com.example.elitekingboard.databinding.FragmentSignupBinding
 import com.example.elitekingboard.ui.base.BaseFragment
 import com.example.elitekingboard.ui.main.view.dialog.ProgressDialog
@@ -19,15 +21,26 @@ class SignUpFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
     }
 
     private fun requestSignUpData() {
+
         binding.btnSignUp.setOnClickListener {
-            loginViewModel.signUpResponse.observe(viewLifecycleOwner, Observer { resource ->
+            loginViewModel.requestSignUp(
+                SignUpRequest(
+                    binding.edtNickname.editText!!.text.toString(),
+                    binding.edtPassword.editText!!.text.toString(),
+                    binding.edtEmail.editText!!.text.toString()
+                )
+            )
+            loginViewModel.requestSignUp(SignUpRequest(
+                binding.edtNickname.editText!!.text.toString(),
+                binding.edtPassword.editText!!.text.toString(),
+                binding.edtEmail.editText!!.text.toString()
+            )).observe(viewLifecycleOwner, Observer { resource ->
                 when(resource.status) {
                     Resource.Status.SUCCESS -> {
-                        when(resource.data?.code()) {
-                            200 -> {
+                        progressDialog.dismiss()
+                        toast(requireContext(), "이메일로 인증메일을 전송하였습니다.")
 //                                resource.data.headers()
-                            }
-                        }
+                        Log.d("TAG", "requestSignUpData: ")
                     }
                     Resource.Status.LOADING -> {
                         progressDialog.show()
@@ -38,6 +51,7 @@ class SignUpFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                     }
                 }
             })
+
         }
     }
 

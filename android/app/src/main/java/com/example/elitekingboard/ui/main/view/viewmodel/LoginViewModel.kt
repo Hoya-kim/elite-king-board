@@ -1,9 +1,6 @@
 package com.example.elitekingboard.ui.main.view.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.elitekingboard.data.dto.request.LoginRequest
 import com.example.elitekingboard.data.dto.request.SignUpRequest
 import com.example.elitekingboard.data.dto.response.LoginResponse
@@ -22,20 +19,12 @@ class LoginViewModel(private val remoteRepository: RemoteRepository) : ViewModel
     val loginResponse: LiveData<Resource<Response<LoginResponse>>>
         get() = _loginResponse
 
-    fun requestSignUp(signUpRequest: SignUpRequest) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _signUpResponse.postValue(Resource.loading(null))
-            try {
-                _signUpResponse.postValue(
-                    Resource.success(
-                        remoteRepository.requestSignUp(
-                            signUpRequest
-                        )
-                    )
-                )
-            } catch (e: Exception) {
-                _signUpResponse.postValue(Resource.error(null, e.message ?: "Error"))
-            }
+    fun requestSignUp(singUpRequest: SignUpRequest) = liveData {
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(remoteRepository.requestSignUp(singUpRequest)))
+        } catch (e: Exception) {
+            emit(Resource.error(null, e.message ?: "Error Occured"))
         }
     }
 

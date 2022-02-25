@@ -42,13 +42,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     private fun requestLoginApi() {
+        loginViewModel.requestLogin(
+            LoginRequest(
+                binding.edtId.editText!!.text.toString(),
+                binding.edtPassword.editText!!.text.toString()
+            )
+        )
         loginViewModel.loginResponse.observe(viewLifecycleOwner, Observer { resource ->
-            when(resource.status) {
+            when (resource.status) {
                 Resource.Status.SUCCESS -> {
-                    when(resource.data?.code()) {
+                    when (resource.data?.code()) {
                         200 -> {
-                            MySharedPreferences.setUserId(requireContext(), binding.edtId.editText!!.text.toString())
-                            MySharedPreferences.setUserPass(requireContext(), binding.edtPassword.editText!!.text.toString())
+                            MySharedPreferences.setUserId(
+                                requireContext(),
+                                binding.edtId.editText!!.text.toString()
+                            )
+                            MySharedPreferences.setUserPass(
+                                requireContext(),
+                                binding.edtPassword.editText!!.text.toString()
+                            )
 //                           MySharedPreferences.setJwt(requireContext(), loginResponse.result.jwt)
                             startActivity(Intent(requireContext(), MainActivity::class.java))
                             requireActivity().finish()

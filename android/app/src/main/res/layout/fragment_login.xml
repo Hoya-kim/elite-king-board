@@ -14,7 +14,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cstLy1"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="180dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -25,7 +25,8 @@
                         android:src="@drawable/logo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="20dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,7 +80,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/subColor"
+                            android:background="@drawable/corner"
                             android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +103,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/subColor"
+                            android:background="@drawable/corner"
                             android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,7 +112,7 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/mainColor"
+                        android:background="@drawable/corner_1"
                         android:text="@string/login"
                         android:textColor="@color/white"
                         android:textSize="18sp"
