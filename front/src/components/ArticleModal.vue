@@ -37,7 +37,7 @@
         <v-list>
           <!-- prepend-avatar="https://cdn.vuetifyjs.com/images/john.png" -->
           <v-list-item
-            :title="article.modifiedBy"
+            :title="article.createdBy"
             :subtitle="article.createdAt">
             <template #prepend>
               <v-avatar class="list-item-avatar">
@@ -102,7 +102,6 @@ import Avatar from 'vue-avatar-component';
       return {
         primaryColor: '#F43142',
         dialog: false,
-        
         article: {
           // sample data
           id: '0',
@@ -111,7 +110,7 @@ import Avatar from 'vue-avatar-component';
           viewCount: 3000,
           likeCount: 256,
           createdAt: '2020-01-01',
-          modifiedBy: '게시자',
+          createdBy: '게시자',
           hashTags: ['#해쉬태그1', '#해쉬태그2'],
           isLiked: true,
           comments: [
@@ -143,12 +142,6 @@ import Avatar from 'vue-avatar-component';
           ],
         },
       };
-    },
-    computed: { // Turn our data into viewable values with these functions
-      identicon: function() {
-        // eslint-disable-next-line no-undef
-        return jdenticon.toSvg('user127', 200);
-      },
     },
     mounted() {
       document.addEventListener('backbutton', this.overideAndroidBackButton);

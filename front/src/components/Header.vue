@@ -20,7 +20,9 @@
       </v-icon>
     </v-btn>
 
-    <v-btn icon>
+    <v-btn
+      icon
+      @click="showAndroidToast('hello')">
       <v-icon
         :size="iconSize">
         mdi-account
@@ -39,5 +41,15 @@ export default {
     logo,
     iconSize: '30',
   }),
+
+  methods: {
+    showAndroidToast(toast) { 
+      console.log('호출', toast); 
+      // eslint-disable-next-line no-undef
+      console.log({Android});
+      // eslint-disable-next-line no-undef
+      Android.showToast(toast); 
+    },
+  },
 };
 </script>

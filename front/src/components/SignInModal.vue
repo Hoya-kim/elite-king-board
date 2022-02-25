@@ -19,7 +19,7 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="email"
-                  label="Email*"
+                  label="Email(@11stcorp.com)*"
                   required />
               </v-col>
               <v-col
@@ -101,7 +101,7 @@
     created() {
       // @TODO: token 확인. 로그인 안 되었을 경우 로그인 모달창 띄우기
       setTimeout(() => {
-        this.dialog = true;
+        // this.dialog = true;
         this.defineFullScreen();
       }, 100);
     },
