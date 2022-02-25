@@ -51,6 +51,7 @@ Navigation - 2.3.2
 Front 
 ```
 Vue.js - 3.0.0(alpha)
+Vuetify
 html - 5
 css - 3
 sass - 1.23.0
