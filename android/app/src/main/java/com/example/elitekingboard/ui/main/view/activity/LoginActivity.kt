@@ -4,10 +4,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.elitekingboard.R
-import com.example.elitekingboard.databinding.ActivityMainBinding
+import com.example.elitekingboard.databinding.ActivityLoginBinding
 import com.example.elitekingboard.ui.base.BaseActivity
 
-class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
+class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
+
 
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment).navController
@@ -15,7 +16,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private val appBarConfiguration by lazy {
         AppBarConfiguration(
-            setOf(R.id.mainFragment)
+            setOf(R.id.loginFragment)
         )
     }
 
@@ -26,5 +27,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 }

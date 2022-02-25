@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">EliteKingBoard</string>
     <string name="timeline">타임라인</string>
+    <string name="id">아이디</string>
+    <string name="password">비밀번호</string>
+    <string name="nickname">닉네임</string>
+    <string name="email">이메일</string>
+    <string name="address">주소</string>
+    <string name="phone">핸드폰번호</string>
+    <string name="name">이름</string>
+    <string name="login">로그인</string>
+    <string name="signup">회원가입</string>
+    <string name="auto_login">자동로그인</string>
+    <string name="connect_fail">연결실패</string>
+    <string name="confirm_login">님 로그인 되었습니다.</string>
 </resources>
