@@ -14,7 +14,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-            .mvcMatchers("/", "/accounts/sign-up", "/login", "/accounts/authentication-mail")
+            .mvcMatchers("/", "/accounts/sign-up", "/login", "/accounts/authentication-mail",
+                "/articles", "/articles-add", "/articles/{id}")
+
             .permitAll()
             .anyRequest().authenticated();
     }
