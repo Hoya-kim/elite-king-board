@@ -35,21 +35,23 @@ public class ArticleController {
     @GetMapping("/articles")
     public Result getArticle() {
 
-            List<Article> articles = articleService.findArticles();
-            articles.stream().map(
-                    m -> new ArticleDto(m.getId(), m.getTitle(), m.getContent(), m.getViewCount(),
-                        m.getLikeCount(), m.getCreatedBy(), m.getModifiedBy()))
-                .collect(Collectors.toList());
+        List<Article> articles = articleService.findArticles();
+        articles.stream().map(
+                m -> new ArticleDto(m.getId(), m.getTitle(), m.getContent(), m.getViewCount(),
+                    m.getLikeCount(), m.getCreatedBy(), m.getModifiedBy()))
+            .collect(Collectors.toList());
 
         return new Result(articles);
     }
 
     @GetMapping("/articles/{id}")
     public Map<String, Object> getArticleNumber(@PathVariable("id") Long id) {
+
         Map<String, Object> response = new HashMap<>();
+        Article article = articleService.findOne(id);
+        articleService.updateLikeViewCount(id);
 
         try {
-            Article article = articleService.findOne(id);
             response.put("result",
                 new GetAricleResponse(article.getId(), article.getTitle(), article.getContent(),
                     article.getViewCount(), article.getLikeCount(),
@@ -103,13 +105,13 @@ public class ArticleController {
             Article article = articleService.findOne(id);
             response.put("result", new UpdateArticleResponse(article.getId(), article.getTitle(),
                 article.getContent(),
-                article.getViewCount(), article.getLikeCount(),
-                article.getCreatedAt(), article.getCreatedBy(), article.getModifiedAt(),
-                article.getModifiedBy()));
+                article.getCreatedAt(), article.getCreatedBy(), article.getModifiedAt()
+                ));
         } catch (Exception e) {
             response.put("result", "FAIL");
             response.put("reason", "단일 게시글을 수정할 수 없습니다.");
         }
         return response;
     }
+
 }

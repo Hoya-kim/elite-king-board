@@ -26,6 +26,13 @@ public class ArticleService {
         article.setTitle(title);
     }
 
+    @Transactional
+    public void updateLikeViewCount(Long id){
+        Article article = findOne(id);
+        article.setLikeCount(article.getLikeCount()+1);
+        article.setViewCount(article.getViewCount()+1);
+    }
+
     public Article findOne(Long id) {
         return articleRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException(INVALID_ARTICLE_MESSAGE));
