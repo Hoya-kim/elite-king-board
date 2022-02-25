@@ -79,7 +79,7 @@ public class ArticleController {
     }
 
 
-    @PostMapping("/articles-add")
+    @PostMapping("/articles")
     public Map<String, Object> saveArticle(@RequestBody @Valid CreateArticleRequest request) {
         Map<String, Object> response = new HashMap<>();
         try {

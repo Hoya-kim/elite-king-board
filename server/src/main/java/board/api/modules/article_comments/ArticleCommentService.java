@@ -5,6 +5,7 @@ import board.api.common.PagingResponseDto;
 import board.api.modules.article_comments.dto.ArticleCommentRequestDto;
 import board.api.modules.article_comments.dto.ArticleCommentResponseDto;
 import board.api.modules.articles.model.Article;
+import board.api.modules.articles.repository.ArticleRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;

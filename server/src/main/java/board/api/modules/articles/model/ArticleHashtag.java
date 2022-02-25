@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "article_hashtag")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArticleHashtag {
 
     @Id
