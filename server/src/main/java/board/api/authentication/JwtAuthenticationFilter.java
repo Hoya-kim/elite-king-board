@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,15 +53,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-            Authentication authResult) {
+            Authentication authResult) throws IOException {
         UserAccount userAccount = (UserAccount) authResult.getPrincipal();
 
         String jwtToken = createJwtToken(userAccount);
         addAuthorizationHeader(response, jwtToken);
-    }
-
-    private void addAuthorizationHeader(HttpServletResponse response, String jwtToken) {
-        response.addHeader(HttpHeaders.AUTHORIZATION, JwtProperties.TOKEN_PREFIX + jwtToken);
+        addNicknameToBody(response, userAccount);
     }
 
     private String createJwtToken(UserAccount userAccount) {
@@ -69,5 +67,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("id", userAccount.getAccount().getId())
                 .withClaim("email", userAccount.getAccount().getEmail())
                 .sign(Algorithm.HMAC512(jwtSecretKey));
+    }
+
+    private void addAuthorizationHeader(HttpServletResponse response, String jwtToken) {
+        response.addHeader(HttpHeaders.AUTHORIZATION, JwtProperties.TOKEN_PREFIX + jwtToken);
+    }
+
+    private void addNicknameToBody(HttpServletResponse response, UserAccount userAccount) throws IOException {
+        response.getWriter().println(objectMapper.writeValueAsString(new HashMap<>(){
+            {
+                put("nickname", userAccount.getAccount().getNickname());
+            }
+        }));
     }
 }
