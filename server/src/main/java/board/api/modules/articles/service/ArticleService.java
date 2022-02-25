@@ -15,32 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private final String INVALID_ARTICLE_MESSAGE = "존재하지 않는 게시글입니다.";
+
     private final ArticleRepository articleRepository;
     private final AccountRepository accountRepository;
 
     @Transactional
     public void update(Long id, String title) {
-        Article article = articleRepository.findOne(id);
+        Article article = findOne(id);
         article.setTitle(title);
     }
 
     public Article findOne(Long id) {
-        return articleRepository.findOne(id);
+        return articleRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException(INVALID_ARTICLE_MESSAGE));
     }
 
     @Transactional
     public Long join(CreateArticleRequest request) {
 
         Account account = accountRepository.findById(request.getAccountId()).get();
-        Article article = new Article();
-        article.setTitle(request.getTitle());
-        article.setContent(request.getContent());
-        article.setViewCount(request.getViewCount());
-        article.setLikeCount(request.getLikeCount());
-        article.setCreatedBy(request.getCreatedBy());
-        article.setModifiedBy(request.getModifiedBy());
-        article.setAccount(account);
-
+        Article article = new Article(request, account);
         articleRepository.save(article);
         return article.getId();
     }
@@ -51,7 +46,6 @@ public class ArticleService {
 
     @Transactional
     public void delete(Long id) {
-        Article user = articleRepository.findOne(id);
-        articleRepository.delete(user);
+        articleRepository.deleteById(id);
     }
 }

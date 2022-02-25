@@ -1,6 +1,8 @@
 package board.api.modules.articles.model;
 
 import board.api.modules.account.Account;
+import board.api.modules.article_comments.ArticleComment;
+import board.api.modules.articles.dto.CreateArticleRequest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -10,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "article")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Article extends BaseEntity {
 
     @Id
@@ -34,6 +35,7 @@ public class Article extends BaseEntity {
 
     private Integer likeCount;
 
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
@@ -44,4 +46,13 @@ public class Article extends BaseEntity {
     @OneToMany(mappedBy = "article")
     private List<ArticleHashtag> articleHashTags = new ArrayList<>();
 
+    public Article(CreateArticleRequest request, Account account) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.viewCount = request.getViewCount();
+        this.likeCount = request.getLikeCount();
+        this.createdBy = request.getNickname();
+        this.modifiedBy = createdBy;
+        this.account = account;
+    }
 }
