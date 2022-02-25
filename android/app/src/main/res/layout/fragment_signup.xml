@@ -100,7 +100,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="30dp"
                     android:text="인증메일 보내기"
-                    android:background="@color/subColor" />
+                    android:background="@color/subColor"
+                    android:id="@+id/btnSignUp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
