@@ -51,7 +51,7 @@ public class Article extends BaseEntity {
         this.content = request.getContent();
         this.viewCount = request.getViewCount();
         this.likeCount = request.getLikeCount();
-        this.createdBy = request.getNickname();
+        this.createdBy = account.getNickname();
         this.modifiedBy = createdBy;
         this.account = account;
     }

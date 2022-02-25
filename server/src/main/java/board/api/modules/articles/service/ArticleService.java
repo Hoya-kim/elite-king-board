@@ -34,7 +34,8 @@ public class ArticleService {
     @Transactional
     public Long join(CreateArticleRequest request) {
 
-        Account account = accountRepository.findById(request.getAccountId()).get();
+        Account account = accountRepository.findById(request.getAccountId())
+            .orElseThrow(() -> new IllegalArgumentException(INVALID_ARTICLE_MESSAGE));
         Article article = new Article(request, account);
         articleRepository.save(article);
         return article.getId();
