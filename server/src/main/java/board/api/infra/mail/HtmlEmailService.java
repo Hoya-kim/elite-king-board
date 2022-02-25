@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-@Profile("dev")
+@Profile("dev | real")
 @RequiredArgsConstructor
 @Slf4j
 @Component
