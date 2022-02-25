@@ -11,7 +11,7 @@
         <v-card-subtitle>
           {{ article.createdAt }}
           <v-spacer />
-          {{ article.modifiedBy }}
+          {{ article.createdBy }}
         </v-card-subtitle>
       </v-card-header-text>
     </v-card-header>
@@ -21,7 +21,7 @@
       </div>
       <div>
         <v-chip
-          v-for="(tag, idx) in article.hashTags"
+          v-for="(tag, idx) in article.articleHashTags"
           :key="idx"
           class="ma-1"
           size="small"
@@ -74,30 +74,26 @@ export default {
   components: {
     ArticleModal,
   },
+  props: {
+    article: {
+      type: Object,
+      required: true,
+    },
+  },
   data: () => ({
     primaryColor: '#F43142',
-    article: {
-      // sample data
-      id: '0',
-      title: '게시글 제목',
-      content: '게시글 본문, Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas dolore facilis veritatis id, nam totam officia minima consequatur sapiente vel repellendus ea sint officiis numquam similique maxime. Quas, vero eveniet!',
-      viewCount: 3000,
-      likeCount: 256,
-      createdAt: '2020-01-01',
-      modifiedBy: '게시자',
-      hashTags: ['#해쉬태그1', '#해쉬태그2'],
-      isLiked: true,
-    },
+    isLiked: false,
+    likeCount: 255,
   }),
   computed: {
     iconStatus() {
-      return this.article.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
+      return this.isLiked ? 'mdi-heart' : 'mdi-heart-outline';
     },
   },
   methods: {
     clickLike() {
-      this.article.isLiked = !this.article.isLiked;
-      this.article.likeCount += this.article.isLiked ? 1 : -1;
+      this.isLiked = !this.isLiked;
+      this.likeCount += this.isLiked ? 1 : -1;
     },
     copyArticleLink() {
       // @TODO: click event link to h3
