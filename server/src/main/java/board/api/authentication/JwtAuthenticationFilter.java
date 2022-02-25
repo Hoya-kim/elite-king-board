@@ -76,6 +76,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private void addNicknameToBody(HttpServletResponse response, UserAccount userAccount) throws IOException {
         response.getWriter().println(objectMapper.writeValueAsString(new HashMap<>(){
             {
+                put("accountId", userAccount.getAccount().getId());
                 put("nickname", userAccount.getAccount().getNickname());
             }
         }));
