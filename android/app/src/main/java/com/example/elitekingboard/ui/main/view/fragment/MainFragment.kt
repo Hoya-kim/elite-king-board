@@ -36,6 +36,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             setSupportMultipleWindows(true)
         }
         var a = "Abc"
+//                binding.webView.loadUrl("file:///android_asset/simple.html")
+
         binding.webView.loadUrl("https://elite-king-board.web.app/")
 //        binding.webView.loadUrl("javascript:receiveToken('$a')")
 
@@ -51,7 +53,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         })
         binding.webView.addJavascriptInterface(WebAppInterface(requireContext(), binding.webView), "Android")
 
-//        binding.webView.loadUrl("file:///android_asset/simple.html")
 //        binding.webView.setOnKeyListener(object : View.OnKeyListener {
 //            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
 //                if (event.action == KeyEvent.ACTION_DOWN) {
