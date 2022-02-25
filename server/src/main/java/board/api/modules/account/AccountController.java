@@ -5,6 +5,7 @@ import board.api.modules.account.dto.SignUpRequestDto;
 import board.api.modules.account.dto.SignUpResponseDto;
 import board.api.modules.account.mapper.AccountMapper;
 import board.api.modules.account.validator.SignUpValidator;
+import board.api.utils.RequestUtils;
 import java.net.URI;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,8 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto signupRequestDto,
-        Errors errors)
-        throws MessagingException {
+            Errors errors)
+            throws MessagingException {
         signUpValidator.validate(signupRequestDto, errors);
         if (errors.hasErrors()) {
             throw new InvalidSignUpRequestException(getFirstErrorDefaultMessage(errors));
@@ -57,40 +58,24 @@ public class AccountController {
         Account newAccount = accountService.completeSignUp(email, token);
 
         return ResponseEntity.created(URI.create("/members/" + newAccount.getId()))
-            .body(accountMapper.toResponseDto(newAccount));
+                .body(accountMapper.toResponseDto(newAccount));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public String invalidSignUpRequestExceptionHandler(InvalidSignUpRequestException exception,
-        HttpServletRequest request) {
-        log.error("{}의 회원 가입 요청 실패: {}", getRemoteAddress(request), exception.getMessage());
+            HttpServletRequest request) {
+        log.error("{}의 회원 가입 요청 실패: {}", RequestUtils.getRemoteAddress(request), exception.getMessage());
 
         return exception.getMessage();
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public String MessagingExceptionHandler(MessagingException exception,
-        HttpServletRequest request) {
-        log.info("{}의 {}요청 인증메일 전송 실패", getRemoteAddress(request), request.getRequestURI());
+    public String MessagingExceptionHandler(MessagingException exception, HttpServletRequest request) {
+        log.info("{}의 {}요청 인증메일 전송 실패", RequestUtils.getRemoteAddress(request), request.getRequestURI());
         log.error("Server Error: ", exception.getMessage());
 
         return "/error/5xx";
-    }
-
-    private String getRemoteAddress(HttpServletRequest request) {
-        String remoteAddr = request.getHeader("X-FORWARDED-FOR");
-
-        if (remoteAddr == null) {
-            remoteAddr = request.getHeader("Proxy-Client-IP");
-        }
-        if (remoteAddr == null) {
-            remoteAddr = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (remoteAddr == null) {
-            remoteAddr = request.getRemoteAddr();
-        }
-        return remoteAddr;
     }
 }

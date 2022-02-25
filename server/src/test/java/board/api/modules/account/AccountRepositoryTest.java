@@ -47,4 +47,16 @@ class AccountRepositoryTest {
         // When & Then
         assertThat(accountRepository.existsByEmail(account.getEmail())).isFalse();
     }
+
+    @DisplayName("이메일로 계정을 찾아 반환한다.")
+    @Test
+    void GivenEmail_WhenfindByEmail_ThenAccount() {
+        // Given
+        Account newAccount = accountRepository.save(account);
+
+        // When
+        Account account = accountRepository.findByEmail(this.account.getEmail()).get();
+        // Then
+        assertThat(account).isEqualTo(newAccount);
+    }
 }

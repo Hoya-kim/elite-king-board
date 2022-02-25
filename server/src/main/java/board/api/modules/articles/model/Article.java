@@ -17,6 +17,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "article")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 public class Article extends BaseEntity {
 
     @Id

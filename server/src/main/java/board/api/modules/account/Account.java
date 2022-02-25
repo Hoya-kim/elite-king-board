@@ -25,19 +25,20 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
     @Getter
+    @Column(nullable = false)
     private String nickname;
 
+    @Getter
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
     @Getter
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
     @Getter
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Getter
