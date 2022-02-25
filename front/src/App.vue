@@ -1,23 +1,29 @@
 <template>
   <v-app>
+    <Header />
     <v-main>
-      <HelloWorld />
+      <CardsContainer />
     </v-main>
+    <SignInModal />
   </v-app>
 </template>
 
 <script>
-  import HelloWorld from './components/HelloWorld.vue';
+  import Header from './components/Header.vue';
+  import CardsContainer from './components/CardsContainer.vue';
+  import SignInModal from './components/SignInModal.vue';
 
   export default {
     name: 'App',
 
     components: {
-      HelloWorld,
+      Header,
+      CardsContainer,
+      SignInModal,
     },
 
     data: () => ({
-      //
+      dialog: false,
     }),
   };
 </script>
