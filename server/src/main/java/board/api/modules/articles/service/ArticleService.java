@@ -3,6 +3,7 @@ package board.api.modules.articles.service;
 import board.api.modules.account.Account;
 import board.api.modules.account.AccountRepository;
 import board.api.modules.articles.dto.CreateArticleRequest;
+import board.api.modules.articles.dto.UpdateArticleRequest;
 import board.api.modules.articles.model.Article;
 import board.api.modules.articles.repository.ArticleRepository;
 import java.util.List;
@@ -21,9 +22,10 @@ public class ArticleService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public void update(Long id, String title) {
+    public void update(Long id, UpdateArticleRequest request) {
         Article article = findOne(id);
-        article.setTitle(title);
+        article.setTitle(request.getTitle());
+        article.setContent(request.getContent());
     }
 
     public Article findOne(Long id) {

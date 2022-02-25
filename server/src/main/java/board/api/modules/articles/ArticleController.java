@@ -99,7 +99,7 @@ public class ArticleController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            articleService.update(id, request.getTitle());
+            articleService.update(id, request);
             Article article = articleService.findOne(id);
             response.put("result", new UpdateArticleResponse(article.getId(), article.getTitle(),
                 article.getContent(),
