@@ -150,6 +150,17 @@ import Avatar from 'vue-avatar-component';
         return jdenticon.toSvg('user127', 200);
       },
     },
+    mounted() {
+      document.addEventListener('backbutton', this.overideAndroidBackButton);
+    },
+    methods: {
+      overideAndroidBackButton() {
+        this.dialog ? this.turnOffModal() : navigator.app.exitApp();
+      },
+      turnOffModal() {
+        this.dialog = false;
+      },
+    },
   };
 </script>
 <style>
