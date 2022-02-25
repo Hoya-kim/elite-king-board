@@ -30,6 +30,7 @@ public class AccountService implements UserDetailsService {
     private static final String AUTHENTICATION_EMAIL_VIEW = "mail/authentication";
     private static final String AUTHENTICATION_EMAIL_SUBJECT = "Elite King Board 인증 메일 입니다.";
     private static final String INVALID_AUTHENTICATION_MAIL_EXCEPTION_MESSAGE = "인증 유효기간을 초과했거나 올바르지 않은 요청입니다.";
+    private static final String USER_NOT_FOUND_EXCEPTION_MESSAGE = "올바르지 않은 로그인 정보입니다.";
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -105,10 +106,9 @@ public class AccountService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(email);
-        if (account == null) {
-            throw new UsernameNotFoundException("올바르지 않은 로그인 정보입니다.");
-        }
+        Account account = accountRepository.findByEmail(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE);
+        });
         return new UserAccount(account);
     }
 }

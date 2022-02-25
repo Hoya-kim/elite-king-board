@@ -55,7 +55,7 @@ class AccountRepositoryTest {
         Account newAccount = accountRepository.save(account);
 
         // When
-        Account account = accountRepository.findByEmail(this.account.getEmail());
+        Account account = accountRepository.findByEmail(this.account.getEmail()).get();
         // Then
         assertThat(account).isEqualTo(newAccount);
     }

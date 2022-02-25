@@ -14,9 +14,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+
+    private static final String INVALID_TOKEN_EXCEPTION_MESSAGE = "유효하지 않은 토큰 정보 입니다.";
 
     private final AccountRepository accountRepository;
     private final String jwtSecretKey;
@@ -41,13 +44,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String token = removePrefix(request.getHeader(HttpHeaders.AUTHORIZATION));
         String email = getEmail(token);
 
-        if (email != null) {
-            Account account = accountRepository.findByEmail(email);
-            Authentication authentication = getAuthentication(account);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        Account account = accountRepository.findByEmail(email).orElseThrow(() -> {
+            throw new UsernameNotFoundException(INVALID_TOKEN_EXCEPTION_MESSAGE);
+        });
+        Authentication authentication = getAuthentication(account);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            chain.doFilter(request, response);
-        }
+        chain.doFilter(request, response);
     }
 
     private boolean invalidFormat(String jwtHeader) {
