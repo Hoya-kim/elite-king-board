@@ -44,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .logout()
                 .logoutSuccessUrl("/");
-    }
 
     @Override
     public void configure(WebSecurity web) {
