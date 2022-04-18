@@ -18,7 +18,7 @@ class AccountRepositoryTest {
 
     @BeforeEach
     void before() {
-        account = new Account("kim", "12341234", "test@11stcorp.com", Role.USER);
+        account = new Account("kim", "12341234", "test@11board.com", Role.USER);
     }
 
     @DisplayName("계정 정보를 저장 한다.")

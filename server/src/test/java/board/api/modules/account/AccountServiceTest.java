@@ -37,7 +37,7 @@ class AccountServiceTest {
 
     @BeforeEach
     void before() {
-        signUpRequestDto = new SignUpRequestDto("kim", "12341234", "test@11stcorp.com");
+        signUpRequestDto = new SignUpRequestDto("kim", "12341234", "test@11board.com");
     }
 
     @DisplayName("회원 가입 요청이 들어오면 캐시에 임시로 저장한다.")

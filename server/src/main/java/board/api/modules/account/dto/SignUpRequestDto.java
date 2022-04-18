@@ -22,7 +22,7 @@ public class SignUpRequestDto {
     @NotBlank
     private String password;
 
-    @Pattern(regexp = ".+@11stcorp.com$")
+    @Pattern(regexp = ".+@11board.com$")
     @NotBlank
     private String email;
 
